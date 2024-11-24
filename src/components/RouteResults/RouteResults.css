@@ -1,0 +1,15 @@
+.route-results {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .form-container {
+    margin-bottom: 30px;
+  }
+  
+  .results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }

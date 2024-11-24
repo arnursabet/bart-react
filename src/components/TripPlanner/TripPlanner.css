@@ -1,0 +1,104 @@
+.trip-planner {
+    min-height: 100vh;
+    background-color: white;
+  }
+  
+  .hero-section {
+    display: flex;
+    justify-content: space-between;
+    background-image: url('/bart-train.png');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 20px;
+    height: 60vh;
+  }
+  
+  .hero-content {
+    align-content: end;
+  }
+  
+  .bart-logo {
+    height: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .page-title {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .map-overlay {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    gap: 16px;
+  }
+  
+  .system-map {
+    width: 100%;
+    max-width: 200px;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .expand-map-btn {
+    width: 100%;
+    padding: 8px;
+    background: white;
+    border: none;
+    color: #0066cc;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .service-info {
+    max-width: 250px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 16px;
+    border-radius: 8px;
+    color: #333;
+  }
+  
+  /* .service-hours {
+    margin-bottom: 16px;
+  } */
+  
+  /* .service-hours h3,
+  .other-resources p:first-child {
+    font-weight: 600;
+    margin-bottom: 8px;
+  } */
+  
+  .service-hours p,
+  .other-resources p {
+    font-size: 11px;
+  }
+  
+  .form-section {
+    background-color: white;
+    padding: 0 40px;
+  }
+
+  .trip-planner.results-view .hero-section {
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+  }
+  
+  .content-section {
+    transition: transform 0.3s ease-out;
+  }
+  
+  .content-section, .show-results {
+    transform: translateY(0vh);
+  }

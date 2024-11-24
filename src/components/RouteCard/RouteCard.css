@@ -1,0 +1,119 @@
+.route-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .route-summary {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
+    align-items: center;
+  }
+  
+  .time {
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+  }
+  
+  .route-line {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .line-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .line-indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 500;
+  }
+  
+  .red-line .line-indicator {
+    background-color: #FF0000;
+  }
+  
+  .orange-line .line-indicator {
+    background-color: #FFA500;
+  }
+  
+  .trip-stats {
+    display: flex;
+    gap: 24px;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .stat img {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .more-details {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #0066cc;
+    padding: 12px;
+    margin-top: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .stops-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .stops-table th,
+  .stops-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .stops-table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+  }
+  
+  .status-indicator {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  .status-indicator.on-time {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+  }
+  
+  .status-indicator.delayed {
+    background-color: #ffeae9;
+    color: #d32f2f;
+  }
