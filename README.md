@@ -28,6 +28,7 @@ npm run dev
 The app will be available at `http://localhost:5173`
 
 ## Project Structure
+```sh
 bart-react/
 ├── src/
 │   ├── components/        # React components
@@ -35,6 +36,7 @@ bart-react/
 │   └── styles/          # Global styles
 ├── public/              # Static assets
 └── index.html          # Entry HTML file
+```
 
 ## Commit Instructions
 
