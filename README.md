@@ -37,6 +37,37 @@ bart-react/
 ├── public/              # Static assets
 └── index.html          # Entry HTML file
 ```
+## Fetch & Update Instructions
+1. Fetch latest changes from remote:
+```sh
+git fetch origin
+```
+
+2. Check for any changes:
+```sh
+git status
+```
+
+3. Pull latest changes and merge:
+```sh
+git pull origin main
+```
+
+If you encounter conflicts:
+
+```sh
+# View conflicts
+git diff
+
+# After resolving conflicts
+git add .
+git commit -m "Resolve merge conflicts"
+git push origin main
+```
+
+Note: Always fetch and pull before pushing to avoid merge conflicts.
+
+
 
 ## Commit Instructions
 
@@ -56,3 +87,4 @@ git commit -m "Your descriptive commit message"
 ```sh
 git push origin main
 ```
+
