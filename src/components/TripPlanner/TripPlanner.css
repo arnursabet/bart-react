@@ -1,4 +1,4 @@
-.trip-planner {
+ .trip-planner {
     min-height: 100vh;
     background-color: white;
   }
@@ -12,8 +12,18 @@
     color: white;
     padding: 20px;
     height: 60vh;
+    transition: height 0.5s ease, padding 0.5s ease; /* Smooth height and padding transition */
+    opacity: 1;
   }
-  
+
+  .hero-section.hidden {
+    height: 0;         /* Collapse the height */
+    padding: 0;        /* Remove the padding */
+    opacity: 0;
+    overflow: hidden;  /* Prevent content from spilling out */
+    pointer-events: none;  /* Disable interaction with the hidden section*/
+  }
+
   .hero-content {
     align-content: end;
   }
@@ -95,10 +105,44 @@
     transition: all 0.3s ease-out;
   }
   
-  .content-section {
+  /* .content-section {
     transition: transform 0.3s ease-out;
+  } */
+
+  /* Content Section */
+.content-section {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.content-section.hidden {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+  
+  /* .content-section, .show-results {
+    transform: translateY(0vh);
+  } */
+
+  .back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
   }
   
-  .content-section, .show-results {
-    transform: translateY(0vh);
+  .back-button:hover {
+    background-color: #004a99;
   }
+
+
+
+  

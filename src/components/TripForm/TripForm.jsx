@@ -105,6 +105,7 @@ const TripForm = ({ onSubmit }) => {
     }
   };
 
+
   return (
     <div className="trip-form-container">
       <div className="form-group">
@@ -200,3 +201,4 @@ const TripForm = ({ onSubmit }) => {
 };
 
 export default TripForm;
+
