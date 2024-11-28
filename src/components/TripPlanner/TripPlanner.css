@@ -1,115 +1,128 @@
- .trip-planner {
-    min-height: 100vh;
-    background-color: white;
-  }
-  
-  .hero-section {
-    display: flex;
-    justify-content: space-between;
-    background-image: url('/bart-train.png');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    padding: 20px;
-    height: 60vh;
-    transition: height 0.5s ease, padding 0.5s ease; /* Smooth height and padding transition */
-    opacity: 1;
-  }
+.trip-planner {
+  min-height: 100vh;
+  background-color: white;
+}
 
-  .hero-section.hidden {
-    height: 0;         /* Collapse the height */
-    padding: 0;        /* Remove the padding */
-    opacity: 0;
-    overflow: hidden;  /* Prevent content from spilling out */
-    pointer-events: none;  /* Disable interaction with the hidden section*/
-  }
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  background-image: url('/bart-train.png');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 20px;
+  height: 60vh;
+  transition: height 0.5s ease, padding 0.5s ease; /* Smooth height and padding transition */
+  opacity: 1;
+}
 
-  .hero-content {
-    align-content: end;
-  }
-  
-  .bart-logo {
-    height: 24px;
-    margin-bottom: 16px;
-  }
-  
-  .page-title {
-    font-size: 48px;
-    font-weight: bold;
-    color: white;
-  }
-  
-  .map-overlay {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: flex-end;
-    gap: 16px;
-  }
-  
-  .system-map {
-    width: 100%;
-    max-width: 200px;
-    background: white;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-  }
-  
-  .expand-map-btn {
-    width: 100%;
-    padding: 8px;
-    background: white;
-    border: none;
-    color: #0066cc;
-    font-size: 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  
-  .service-info {
-    max-width: 250px;
-    background: rgba(255, 255, 255, 0.7);
-    padding: 16px;
-    border-radius: 8px;
-    color: #333;
-  }
-  
-  /* .service-hours {
-    margin-bottom: 16px;
-  } */
-  
-  /* .service-hours h3,
-  .other-resources p:first-child {
-    font-weight: 600;
-    margin-bottom: 8px;
-  } */
-  
-  .service-hours p,
-  .other-resources p {
-    font-size: 11px;
-  }
-  
-  .form-section {
-    background-color: white;
-    padding: 0 40px;
-  }
+.hero-section.hidden {
+  height: 0;         /* Collapse the height */
+  padding: 0;        /* Remove the padding */
+  opacity: 0;
+  overflow: hidden;  /* Prevent content from spilling out */
+  pointer-events: none;  /* Disable interaction with the hidden section */
+}
 
-  .trip-planner.results-view .hero-section {
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    transition: all 0.3s ease-out;
-  }
-  
-  /* .content-section {
-    transition: transform 0.3s ease-out;
-  } */
+.hero-content {
+  align-content: end;
+}
 
-  /* Content Section */
+.bart-logo {
+  position: absolute;
+  top: 20px; 
+  left: 20px; 
+  width: 80px; 
+  height: auto;
+  z-index: 10; 
+}
+
+.page-title {
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+}
+
+.map-overlay {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+/* Default map size */
+.system-map {
+  width: 100%;
+  max-width: 200px; /* Default size */
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: all 0.5s ease; /* Smooth transition for resizing */
+}
+
+.system-map.expanded {
+  max-width: 600px; /* Expanded size */
+}
+
+/* Map group styling for expanded view */
+.map-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease; /* Smooth transition for layout */
+}
+
+/* Expand/Collapse button */
+.expand-map-btn {
+  width: 100%;
+  padding: 8px;
+  background: white;
+  border: none;
+  color: #0066cc;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.expand-map-btn:hover {
+  background-color: #f0f0f0;
+  color: #004a99;
+}
+
+/* Service Info Section */
+.service-info {
+  max-width: 250px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 16px;
+  border-radius: 8px;
+  color: #333;
+}
+
+.service-hours p,
+.other-resources p {
+  font-size: 11px;
+}
+
+.form-section {
+  background-color: white;
+  padding: 0 40px;
+}
+
+.trip-planner.results-view .hero-section {
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-out;
+}
+
+/* Content Section */
 .content-section {
   transition: opacity 0.5s ease, transform 0.5s ease;
   opacity: 1;
@@ -120,29 +133,22 @@
   opacity: 0;
   transform: translateY(-20px);
 }
-  
-  /* .content-section, .show-results {
-    transform: translateY(0vh);
-  } */
 
-  .back-button {
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    background-color: #0066cc;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease;
-  }
-  
-  .back-button:hover {
-    background-color: #004a99;
-  }
+/* Back Button */
+.back-button {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
 
-
-
-  
+.back-button:hover {
+  background-color: #004a99;
+}

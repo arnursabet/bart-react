@@ -111,12 +111,14 @@ const TripForm = ({ onSubmit }) => {
       <div className="form-group">
         <label>From</label>
         <div className="input-wrapper">
-          <span className="input-icon"></span>
+          <span className="input-icon">
+            <img src="current-station.png" alt="current station" />
+          </span>
           <select 
             value={formData.origin}
             onChange={(e) => setFormData({...formData, origin: e.target.value})}
           >
-            <option value="">Select station</option>
+            <option value="">Current station</option>
             {stations.map(station => (
               <option key={station.abbr} value={station.abbr}>
                 {station.name}
@@ -139,12 +141,14 @@ const TripForm = ({ onSubmit }) => {
       <div className="form-group">
         <label>To</label>
         <div className="input-wrapper">
-          <span className="input-icon"></span>
+          <span className="input-icon">
+            <img src="destination-station.png" alt="destination station" />
+          </span>
           <select 
             value={formData.destination}
             onChange={(e) => setFormData({...formData, destination: e.target.value})}
           >
-            <option value="">Select station</option>
+            <option value="">Destination station</option>
             {stations.map(station => (
               <option key={station.abbr} value={station.abbr}>
                 {station.name}
@@ -157,7 +161,9 @@ const TripForm = ({ onSubmit }) => {
       <div className="form-group">
         <label>Depart at</label>
         <div className="input-wrapper">
-          <span className="input-icon">🕒</span>
+          <span className="input-icon">
+            <img src="depart-time.png" alt="depart time" />
+          </span>
           <select 
             value={formData.time}
             onChange={(e) => setFormData({...formData, time: e.target.value})}
@@ -174,7 +180,9 @@ const TripForm = ({ onSubmit }) => {
       <div className="form-group">
         <label>Date</label>
         <div className="input-wrapper">
-          <span className="input-icon">📅</span>
+          <span className="input-icon">
+            <img src="depart-date.png" alt="depart date" />
+          </span>
           <select 
             value={formData.date}
             onChange={(e) => setFormData({...formData, date: e.target.value})}

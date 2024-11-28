@@ -29,15 +29,15 @@ const RouteCard = ({
             </div>
             <div className="trip-stats">
               <div className="stat">
-                <img src="/icons/clock.svg" alt="duration" />
+                <img src="total-time.png" alt="duration" />
                 {duration}
               </div>
               <div className="stat">
-                <img src="/icons/stops.svg" alt="stations" />
+                <img src="total-stops.png" alt="stations" />
                 {origin} → {destination}
               </div>
               <div className="stat">
-                <img src="/icons/fare.svg" alt="fare" />
+                <img src="total-cost.png" alt="fare" />
                 ${fare.toFixed(2)}
               </div>
             </div>
