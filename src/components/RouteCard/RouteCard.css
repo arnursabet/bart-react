@@ -41,13 +41,13 @@
     justify-content: center;
     color: black;
     font-weight: 500;
-    border: 1px solid #000;
+    border: none;
   }
   
   
   .trip-stats {
     display: flex;
-    gap: 14px;
+    gap: 24px;
     color: #666;
     font-size: 14px;
     white-space: nowrap;
@@ -146,6 +146,7 @@
     .line-indicator {
       width: 100%;
       padding: 8px;
+      border: none;
     }
   
     .more-details {
