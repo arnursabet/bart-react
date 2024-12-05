@@ -16,14 +16,6 @@
   opacity: 1;
 }
 
-.hero-section.hidden {
-  height: 0;         /* Collapse the height */
-  padding: 0;        /* Remove the padding */
-  opacity: 0;
-  overflow: hidden;  /* Prevent content from spilling out */
-  pointer-events: none;  /* Disable interaction with the hidden section */
-}
-
 .hero-content {
   align-content: end;
 }
@@ -50,6 +42,72 @@
   gap: 16px;
 }
 
+/* MapModal.css */
+.map-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.map-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  animation: slideIn 0.3s ease-out;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 50%;
+  color: #333;
+}
+
+.modal-map-image {
+  width: 100%;
+  height: auto;
+  max-height: calc(90vh - 40px);
+  object-fit: contain;
+}
+
+.view-map-btn {
+  background: #4F8AC9;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 /* Default map size */
 .system-map {
   width: 100%;
@@ -61,10 +119,6 @@
   transition: all 0.5s ease; /* Smooth transition for resizing */
 }
 
-.system-map.expanded {
-  max-width: 600px; /* Expanded size */
-}
-
 /* Map group styling for expanded view */
 .map-group {
   display: flex;
@@ -72,23 +126,6 @@
   align-items: center;
   justify-content: center;
   transition: all 0.5s ease; /* Smooth transition for layout */
-}
-
-/* Expand/Collapse button */
-.expand-map-btn {
-  width: 100%;
-  padding: 8px;
-  background: white;
-  border: none;
-  color: #0066cc;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .expand-map-btn:hover {
@@ -134,21 +171,102 @@
   transform: translateY(-20px);
 }
 
-/* Back Button */
 .back-button {
-  display: inline-block;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  background-color: #0066cc;
+  position: sticky;
+  top: 1rem;
+  left: 82%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background-color: #4F8AC9;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
   text-align: center;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: auto;
+  min-width: 200px;
+  max-width: 90%;
 }
 
 .back-button:hover {
   background-color: #004a99;
+}
+
+.hero-enter {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+.hero-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.hero-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.form-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+.form-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.form-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+.form-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.results-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.results-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.results-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+.results-exit-active {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 300ms, transform 300ms;
+}
+
+@media (max-width: 768px) {
+  .bart-logo {
+    width: 60px;
+  }
+
+  .system-map {
+    max-width: 100%;
+  }
+
+  .map-modal-content {
+    width: 95%;
+    padding: 12px;
+  }
 }

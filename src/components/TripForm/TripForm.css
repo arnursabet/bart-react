@@ -98,6 +98,13 @@
     font-size: 20px;
   }
   
+  .input-wrapper select.loading {
+    background-image: url("spinner.gif");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right center;
+  }
+  
   @media (max-width: 1024px) {
     .trip-form-container {
       flex-direction: column;
@@ -110,4 +117,29 @@
     }
   }
 
+  @media (max-width: 768px) {
+    .trip-form-container {
+      padding: 16px;
+    }
   
+    .time-date-wrapper {
+      flex-direction: column;
+      gap: 8px;
+    }
+  
+    select {
+      padding: 10px;
+      padding-left: 32px;
+      font-size: 14px;
+    }
+  
+    .find-route-btn {
+      width: 100%;
+      justify-content: center;
+      margin-top: 16px;
+    }
+  
+    .form-group {
+      margin-bottom: 12px;
+    }
+  }

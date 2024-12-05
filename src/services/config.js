@@ -6,6 +6,7 @@ export const API_CONFIG = {
   baseUrl: BASE_URL,
   endpoints: {
     stations: '/stn.aspx',
+    allroutes: '/route.aspx',
     routes: '/sched.aspx',
     fare: '/sched.aspx',
     schedules: '/sched.aspx'

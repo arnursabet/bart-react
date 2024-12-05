@@ -1,84 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { bartApi } from '../../services/bartApi';
+import { formatCurrentTime, generateDateOptions, generateTimeOptions, formatDateForApi } from '../../utils/util';
 import './TripForm.css';
+import { useStations } from '../../context/stationContext';
+import * as geolib from 'geolib';
 
 const TripForm = ({ onSubmit }) => {
-  const [stations, setStations] = useState([]);
+  const { stations } = useStations();
   const [formData, setFormData] = useState({
     origin: '',
     destination: '',
     time: formatCurrentTime(),
     date: formatDateForApi(new Date())
   });
-
-  function formatCurrentTime() {
-    const now = new Date();
-    return now.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-  }
-
-  // Generate time options in 15-minute intervals
-  function generateTimeOptions() {
-    const times = [];
-    const now = new Date();
-    now.setMinutes(Math.ceil(now.getMinutes() / 15) * 15);
-    
-    for (let i = 0; i < 96; i++) { // 24 hours * 4 (15-min intervals)
-      const time = new Date(now);
-      time.setMinutes(time.getMinutes() + (i * 15));
-      
-      const timeString = time.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      });
-      
-      times.push(timeString);
-    }
-    return times;
-  }
-
-  function formatDateForApi(date) {
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  }
-
-  function generateDateOptions() {
-    const dates = [];
-    const now = new Date();
-    
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(now);
-      date.setDate(date.getDate() + i);
-      
-      dates.push({
-        display: date.toLocaleDateString('en-US', {
-          weekday: 'short',
-          month: 'short',
-          day: 'numeric'
-        }),
-        value: formatDateForApi(date)
-      });
-    }
-    return dates;
-  }
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
   useEffect(() => {
-    const fetchStations = async () => {
-      try {
-        const response = await bartApi.getStations();
-        setStations(response.root.stations.station);
-      } catch (error) {
-        console.error('Error fetching stations:', error);
-      }
-    };
-    fetchStations();
-  }, []);
+    if (navigator.geolocation) {
+      setIsLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const closestStation = findClosestStation(latitude, longitude);
+          setFormData((prevData) => ({
+            ...prevData,
+            origin: closestStation
+          }));
+          setIsLoading(false);
+        },
+        (error) => {
+          console.error('Error getting geolocation:', error);
+          setIsLoading(false);
+        }
+      );
+    }
+  }, [stations]);
+
+  const findClosestStation = (lat, lon) => {
+    const stationList = Array.from(stations.values());
+
+    const closest = geolib.findNearest(
+      { latitude: lat, longitude: lon },
+      stationList.map((station) => ({
+        latitude: station.gtfs_latitude,
+        longitude: station.gtfs_longitude,
+        abbr: station.abbr
+      }))
+    );
+    return closest.abbr;
+  };
+
+  const isDestinationValid = (destination) => {
+    return destination !== formData.origin;
+  };
 
   const handleSwapStations = () => {
     setFormData(prev => ({
@@ -90,7 +64,6 @@ const TripForm = ({ onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("FORM data: ", formData)
     try {
       const routeData = await bartApi.getRoute(
         formData.origin.toLowerCase(),
@@ -98,13 +71,11 @@ const TripForm = ({ onSubmit }) => {
         formData.time,
         formData.date
       );
-      console.log("Route data: ", routeData)
       onSubmit(routeData);
     } catch (error) {
       console.error('Error fetching route:', error);
     }
   };
-
 
   return (
     <div className="trip-form-container">
@@ -114,20 +85,23 @@ const TripForm = ({ onSubmit }) => {
           <span className="input-icon">
             <img src="current-station.png" alt="current station" />
           </span>
-          <select 
+          <select
             value={formData.origin}
-            onChange={(e) => setFormData({...formData, origin: e.target.value})}
+            onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
+            disabled={isLoading}
           >
-            <option value="">Current station</option>
-            {stations.map(station => (
-              <option key={station.abbr} value={station.abbr}>
-                {station.name}
-              </option>
-            ))}
+            <option value="">
+              {isLoading ? 'Detecting your location...' : 'Select station'}
+            </option>
+            {!isLoading &&
+              Array.from(stations.values()).map((station) => (
+                <option key={station.abbr} value={station.abbr}>
+                  {station.name}
+                </option>
+              ))}
           </select>
         </div>
       </div>
-
       <div className="stations-swap">
         <button 
           type="button" 
@@ -146,11 +120,20 @@ const TripForm = ({ onSubmit }) => {
           </span>
           <select 
             value={formData.destination}
-            onChange={(e) => setFormData({...formData, destination: e.target.value})}
+            onChange={(e) => {
+              const newDestination = e.target.value;
+              if (isDestinationValid(newDestination)) {
+                setFormData({...formData, destination: newDestination});
+              }
+            }}
           >
             <option value="">Destination station</option>
-            {stations.map(station => (
-              <option key={station.abbr} value={station.abbr}>
+            {Array.from(stations.values()).map(station => (
+              <option 
+                key={station.abbr} 
+                value={station.abbr}
+                disabled={station.abbr === formData.origin}
+              >
                 {station.name}
               </option>
             ))}

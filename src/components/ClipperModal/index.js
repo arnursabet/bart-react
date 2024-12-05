@@ -1,0 +1,1 @@
+export {default as ClipperModal} from './ClipperModal';
