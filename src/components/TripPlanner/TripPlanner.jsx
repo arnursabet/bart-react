@@ -70,34 +70,10 @@ const TripPlanner = () => {
       >
         <div ref={heroRef} className="hero-section">
           <img src="/bart-logo.png" alt="BART Logo" className="bart-logo" />
-
+          
           <div className="hero-content">
             <h1 className="page-title">Plan Your Trip</h1>
-          </div>
-
-          <div className="map-overlay">
-          <div className="map-group">
-            <img
-              src="/bart-map.png"
-              alt="BART System Map"
-              className="system-map"
-            />
-            <button 
-              className="view-map-btn" 
-              onClick={() => setIsMapModalOpen(true)}
-            >
-              <span>View Full Map</span>
-              <img src="map.png" alt="map" width="18" />
-            </button>
-          </div>
-
-            <MapModal 
-              isOpen={isMapModalOpen} 
-              onClose={() => setIsMapModalOpen(false)} 
-            />
             
-            
-
             <div className="service-info">
               <div className="service-hours">
                 <h3>BART Service Hours</h3>
@@ -105,15 +81,49 @@ const TripPlanner = () => {
                 Saturday (6:00 am - Midnight)<br/>
                 Sunday (8:00 am - Midnight)</p>
               </div>
-
-              <div className="other-resources">
-                <h3>Other Resources</h3>
-                <p>
-                  PDF timetables are also available as well at Caltrain and Capitol
-                  Corridor transfer timetables.
-                </p>
-              </div>
+              
             </div>
+          </div>
+
+          <div className="map-overlay">
+            <div 
+              className="map-container"
+              onClick={() => setIsMapModalOpen(true)}
+              role="button"
+              tabIndex={0}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setIsMapModalOpen(true);
+                }
+              }}
+              aria-label="Open BART system map"
+            >
+              <img
+                src="/bart-map.png"
+                alt="BART System Map"
+                className="system-map"
+              />
+              <button 
+                className="view-map-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsMapModalOpen(true);
+                }}
+              >
+                <span><strong>Expand Map</strong></span>
+                <img 
+                  src="/expand-image.png" 
+                  alt=""
+                  className="expand-icon"
+                  aria-hidden="true"
+                />
+              </button>
+            </div>
+
+            <MapModal 
+              isOpen={isMapModalOpen} 
+              onClose={() => setIsMapModalOpen(false)} 
+            />
           </div>
         </div>
       </CSSTransition>

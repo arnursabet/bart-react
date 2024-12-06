@@ -1,14 +1,21 @@
-const API_KEY = 'MW9S-E7SL-26DU-VV8V';
-const BASE_URL = 'https://api.bart.gov/api';
+const requiredEnvVars = [
+  'VITE_BART_API_KEY',
+  'VITE_BART_API_URL'
+];
+
+requiredEnvVars.forEach(envVar => {
+  if (!import.meta.env[envVar]) {
+    throw new Error(`Missing required environment variable: ${envVar}`);
+  }
+});
 
 export const API_CONFIG = {
-  key: API_KEY,
-  baseUrl: BASE_URL,
+  key: import.meta.env.VITE_BART_API_KEY,
+  baseUrl: import.meta.env.VITE_BART_API_URL,
   endpoints: {
     stations: '/stn.aspx',
     allroutes: '/route.aspx',
     routes: '/sched.aspx',
-    fare: '/sched.aspx',
-    schedules: '/sched.aspx'
+    // schedules: '/sched.aspx'
   }
 }; 

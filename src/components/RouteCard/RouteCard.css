@@ -153,4 +153,10 @@
       width: 100%;
       justify-content: center;
     }
+
+     
+  .trip-stats {
+    flex-direction: column;
+    white-space: wrap;
+  }
   }

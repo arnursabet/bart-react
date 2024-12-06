@@ -6,6 +6,8 @@
     display: flex;
     gap: 20px;
     align-items: flex-end;
+    margin-right: 40px;
+    margin-left: 40px;
   }
   
   .form-group {
@@ -109,17 +111,18 @@
     .trip-form-container {
       flex-direction: column;
       gap: 16px;
+      display: block;
     }
   
     .stations-swap {
       align-self: center;
-      transform: rotate(90deg);
     }
   }
 
   @media (max-width: 768px) {
     .trip-form-container {
       padding: 16px;
+      display: block;
     }
   
     .time-date-wrapper {
@@ -141,5 +144,9 @@
   
     .form-group {
       margin-bottom: 12px;
+    }
+
+    .stations-swap {
+      text-align: center;
     }
   }

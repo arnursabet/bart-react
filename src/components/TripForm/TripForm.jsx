@@ -80,7 +80,7 @@ const TripForm = ({ onSubmit }) => {
   return (
     <div className="trip-form-container">
       <div className="form-group">
-        <label>From</label>
+        <label><strong>From</strong></label>
         <div className="input-wrapper">
           <span className="input-icon">
             <img src="current-station.png" alt="current station" />
@@ -113,7 +113,7 @@ const TripForm = ({ onSubmit }) => {
       </div>
 
       <div className="form-group">
-        <label>To</label>
+        <label><strong>To</strong></label>
         <div className="input-wrapper">
           <span className="input-icon">
             <img src="destination-station.png" alt="destination station" />
@@ -142,7 +142,7 @@ const TripForm = ({ onSubmit }) => {
       </div>
 
       <div className="form-group">
-        <label>Depart at</label>
+        <label><strong>Depart at</strong></label>
         <div className="input-wrapper">
           <span className="input-icon">
             <img src="depart-time.png" alt="depart time" />
@@ -161,7 +161,7 @@ const TripForm = ({ onSubmit }) => {
       </div>
 
       <div className="form-group">
-        <label>Date</label>
+        <label><strong>Date</strong></label>
         <div className="input-wrapper">
           <span className="input-icon">
             <img src="depart-date.png" alt="depart date" />
