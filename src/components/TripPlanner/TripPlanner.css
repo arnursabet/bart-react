@@ -96,6 +96,9 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 @keyframes fadeIn {

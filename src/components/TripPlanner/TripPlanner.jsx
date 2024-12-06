@@ -86,7 +86,8 @@ const TripPlanner = () => {
               className="view-map-btn" 
               onClick={() => setIsMapModalOpen(true)}
             >
-              View Full Map 🗺
+              <span>View Full Map</span>
+              <img src="map.png" alt="map" width="18" />
             </button>
           </div>
 
@@ -100,13 +101,13 @@ const TripPlanner = () => {
             <div className="service-info">
               <div className="service-hours">
                 <h3>BART Service Hours</h3>
-                <p>Weekdays (5:00 am - Midnight)</p>
-                <p>Saturday (6:00 am - Midnight)</p>
-                <p>Sunday (8:00 am - Midnight)</p>
+                <p>Weekdays (5:00 am - Midnight)<br/>
+                Saturday (6:00 am - Midnight)<br/>
+                Sunday (8:00 am - Midnight)</p>
               </div>
 
               <div className="other-resources">
-                <p>Other Resources</p>
+                <h3>Other Resources</h3>
                 <p>
                   PDF timetables are also available as well at Caltrain and Capitol
                   Corridor transfer timetables.
