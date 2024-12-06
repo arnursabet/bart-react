@@ -49,9 +49,14 @@ const TripPlanner = () => {
   const formRef = useRef(null);
   const resultsRef = useRef(null);
 
-  const handleFormSubmit = (data = null) => {
-    setRouteData(data); // Update routeData
-    setShowHero(false); // Collapse hero section
+  const handleFormSubmit = async (data = null) => {
+    if (!data) return;
+    
+    // Start transition after data is ready
+    requestAnimationFrame(() => {
+      setRouteData(data);
+      setShowHero(false);
+    });
   };
 
   const handleBackClick = () => {

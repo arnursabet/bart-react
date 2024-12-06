@@ -4,6 +4,7 @@ import { formatCurrentTime, generateDateOptions, generateTimeOptions, formatDate
 import './TripForm.css';
 import { useStations } from '../../context/stationContext';
 import * as geolib from 'geolib';
+import { useGeolocation } from '../../hooks/useGeolocation';
 
 const TripForm = ({ onSubmit }) => {
   const { stations } = useStations();
@@ -13,28 +14,17 @@ const TripForm = ({ onSubmit }) => {
     time: formatCurrentTime(),
     date: formatDateForApi(new Date())
   });
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const { location, error: geoError, loading: geoLoading } = useGeolocation();
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      setIsLoading(true);
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          const closestStation = findClosestStation(latitude, longitude);
-          setFormData((prevData) => ({
-            ...prevData,
-            origin: closestStation
-          }));
-          setIsLoading(false);
-        },
-        (error) => {
-          console.error('Error getting geolocation:', error);
-          setIsLoading(false);
-        }
-      );
+    if (location && stations.size > 0) {
+      const closestStation = findClosestStation(location.latitude, location.longitude);
+      setFormData(prev => ({
+        ...prev,
+        origin: closestStation
+      }));
     }
-  }, [stations]);
+  }, [location, stations]);
 
   const findClosestStation = (lat, lon) => {
     const stationList = Array.from(stations.values());
@@ -88,12 +78,12 @@ const TripForm = ({ onSubmit }) => {
           <select
             value={formData.origin}
             onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
-            disabled={isLoading}
+            disabled={geoLoading}
           >
             <option value="">
-              {isLoading ? 'Detecting your location...' : 'Select station'}
+              {geoLoading ? 'Finding nearest station...' : 'Select station'}
             </option>
-            {!isLoading &&
+            {!geoLoading &&
               Array.from(stations.values()).map((station) => (
                 <option key={station.abbr} value={station.abbr}>
                   {station.name}

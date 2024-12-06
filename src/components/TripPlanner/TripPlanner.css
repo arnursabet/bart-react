@@ -187,9 +187,11 @@ h3 {
 
 /* Content Section */
 .content-section {
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  opacity: 1;
-  transform: translateY(0);
+  /* transition: opacity 0.5s ease, transform 0.5s ease; */
+  /* opacity: 1; */
+  /* transform: translateY(0); */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .content-section.hidden {
@@ -246,12 +248,12 @@ h3 {
 
 .form-enter {
   opacity: 0;
-  transform: translateX(-100%);
+  transform: translateX(-20px);
 }
 .form-enter-active {
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 300ms, transform 300ms;
+  transition: all 300ms ease-out;
 }
 .form-exit {
   opacity: 1;
@@ -259,18 +261,18 @@ h3 {
 }
 .form-exit-active {
   opacity: 0;
-  transform: translateX(-100%);
-  transition: opacity 300ms, transform 300ms;
+  transform: translateX(-20px);
+  transition: all 300ms ease-out;
 }
 
 .results-enter {
   opacity: 0;
-  transform: translateX(100%);
+  transform: translateX(20px);
 }
 .results-enter-active {
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 300ms, transform 300ms;
+  transition: all 300ms ease-out;
 }
 .results-exit {
   opacity: 1;
@@ -278,8 +280,8 @@ h3 {
 }
 .results-exit-active {
   opacity: 0;
-  transform: translateX(100%);
-  transition: opacity 300ms, transform 300ms;
+  transform: translateX(20px);
+  transition: all 300ms ease-out;
 }
 
 @media (max-width: 768px) {
