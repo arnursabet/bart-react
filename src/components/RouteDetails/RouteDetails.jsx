@@ -9,7 +9,6 @@ const RouteDetails = ({ legDetails }) => {
 
   const getLineInitial = (line) => {
     const color = routes.get(line).color;
-    console.log(routes.get(line).color);
     return color ? color.charAt(0) : '';
   };
 

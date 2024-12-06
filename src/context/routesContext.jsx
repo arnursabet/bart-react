@@ -25,7 +25,6 @@ export const RoutesProvider = ({ children }) => {
           data.map(route => [route.routeID, route])
         );
         setRoutes(routesMap);
-        console.log(routesMap);
       } catch (err) {
         setError(err);
       } finally {

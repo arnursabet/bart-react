@@ -25,7 +25,6 @@ export const StationsProvider = ({ children }) => {
           data.map(station => [station.abbr, station])
         );
         setStations(stationsMap);
-        console.log(stationsMap);
       } catch (err) {
         setError(err);
       } finally {
