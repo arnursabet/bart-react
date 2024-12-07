@@ -1,3 +1,11 @@
+/**
+ * @component TripForm
+ * @description A form component for planning BART trips that allows users to select origin/destination stations,
+ * departure time and date. Supports geolocation to find nearest station.
+ * 
+ * @param {Object} props
+ * @param {Function} props.onSubmit - Callback function called with route data when form is submitted
+ */
 import { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { bartApi } from '../../services/bartApi';
@@ -5,18 +13,21 @@ import { formatCurrentTime, generateDateOptions, generateTimeOptions, formatDate
 import './TripForm.css';
 import { useStations } from '../../hooks/useStations';
 import { useNearestStation } from '../../hooks/useNearestStation';
-import { useForm } from '../../hooks/useForm';
 
 const TripForm = ({ onSubmit }) => {
+  // Get stations list and nearest station based on geolocation
   const { stations } = useStations();
   const { nearestStation, geoLoading } = useNearestStation();
-  const [formData, setFormData] = useForm({
+
+  // Initialize form state with empty values and current time/date
+  const [formData, setFormData] = useState({
     origin: '',
     destination: '',
     time: formatCurrentTime(),
     date: formatDateForApi(new Date())
   });
 
+  // Memoize station options to prevent unnecessary re-renders
   const stationOptions = useMemo(() => (
     Array.from(stations.values()).map((station) => (
       <option key={station.abbr} value={station.abbr}>
@@ -25,23 +36,50 @@ const TripForm = ({ onSubmit }) => {
     ))
   ), [stations]);
 
+  // Set nearest station as origin when geolocation completes
   useEffect(() => {
-    if (nearestStation && formData.origin !== nearestStation) {
-      setFormData('origin', nearestStation);
+    if (nearestStation && !formData.origin) {
+      setFormData(prev => ({
+        ...prev,
+        origin: nearestStation
+      }));
     }
-  }, [nearestStation, formData.origin, setFormData]);
+  }, [nearestStation, formData.origin]);
 
+  /**
+   * Validates that destination station is different from origin
+   * @param {string} destination - Station abbreviation
+   * @returns {boolean} Whether destination is valid
+   */
   const isDestinationValid = (destination) => {
     return destination !== formData.origin;
   };
 
+  /**
+   * Updates a single form field while preserving other values
+   * @param {string} field - Field name to update
+   * @param {string} value - New value for the field
+   */
+  const updateFormField = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // Swaps origin and destination stations
   const handleSwapStations = () => {
     setFormData({
+      ...formData,
       origin: formData.destination,
       destination: formData.origin
     });
   };
 
+  /**
+   * Handles form submission by calling BART API and passing results to parent
+   * @param {Event} e - Form submit event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -67,7 +105,7 @@ const TripForm = ({ onSubmit }) => {
           </span>
           <select
             value={formData.origin}
-            onChange={(e) => setFormData('origin', e.target.value)}
+            onChange={(e) => updateFormField('origin', e.target.value)}
             disabled={geoLoading}
           >
             <option value="">
@@ -82,6 +120,8 @@ const TripForm = ({ onSubmit }) => {
           type="button" 
           className="swap-btn"
           onClick={handleSwapStations}
+          disabled={!formData.origin || !formData.destination}
+          aria-label="Swap origin and destination stations"
         >
           ⇄
         </button>
@@ -98,7 +138,7 @@ const TripForm = ({ onSubmit }) => {
             onChange={(e) => {
               const newDestination = e.target.value;
               if (isDestinationValid(newDestination)) {
-                setFormData('destination', newDestination);
+                updateFormField('destination', newDestination);
               }
             }}
           >
@@ -124,7 +164,7 @@ const TripForm = ({ onSubmit }) => {
           </span>
           <select 
             value={formData.time}
-            onChange={(e) => setFormData('time', e.target.value)}
+            onChange={(e) => updateFormField('time', e.target.value)}
           >
             {generateTimeOptions().map((time) => (
               <option key={time} value={time}>
@@ -143,7 +183,7 @@ const TripForm = ({ onSubmit }) => {
           </span>
           <select 
             value={formData.date}
-            onChange={(e) => setFormData('date', e.target.value)}
+            onChange={(e) => updateFormField('date', e.target.value)}
           >
             {generateDateOptions().map((date) => (
               <option key={date.value} value={date.value}>
