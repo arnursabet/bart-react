@@ -1,55 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { bartApi } from '../../services/bartApi';
 import { formatCurrentTime, generateDateOptions, generateTimeOptions, formatDateForApi } from '../../utils/util';
 import './TripForm.css';
-import { useStations } from '../../context/stationContext';
-import * as geolib from 'geolib';
-import { useGeolocation } from '../../hooks/useGeolocation';
+import { useStations } from '../../hooks/useStations';
+import { useNearestStation } from '../../hooks/useNearestStation';
+import { useForm } from '../../hooks/useForm';
 
 const TripForm = ({ onSubmit }) => {
   const { stations } = useStations();
-  const [formData, setFormData] = useState({
+  const { nearestStation, geoLoading } = useNearestStation();
+  const [formData, setFormData] = useForm({
     origin: '',
     destination: '',
     time: formatCurrentTime(),
     date: formatDateForApi(new Date())
   });
-  const { location, error: geoError, loading: geoLoading } = useGeolocation();
+
+  const stationOptions = useMemo(() => (
+    Array.from(stations.values()).map((station) => (
+      <option key={station.abbr} value={station.abbr}>
+        {station.name}
+      </option>
+    ))
+  ), [stations]);
 
   useEffect(() => {
-    if (location && stations.size > 0) {
-      const closestStation = findClosestStation(location.latitude, location.longitude);
-      setFormData(prev => ({
-        ...prev,
-        origin: closestStation
-      }));
+    if (nearestStation && formData.origin !== nearestStation) {
+      setFormData('origin', nearestStation);
     }
-  }, [location, stations]);
-
-  const findClosestStation = (lat, lon) => {
-    const stationList = Array.from(stations.values());
-
-    const closest = geolib.findNearest(
-      { latitude: lat, longitude: lon },
-      stationList.map((station) => ({
-        latitude: station.gtfs_latitude,
-        longitude: station.gtfs_longitude,
-        abbr: station.abbr
-      }))
-    );
-    return closest.abbr;
-  };
+  }, [nearestStation, formData.origin, setFormData]);
 
   const isDestinationValid = (destination) => {
     return destination !== formData.origin;
   };
 
   const handleSwapStations = () => {
-    setFormData(prev => ({
-      ...prev,
-      origin: prev.destination,
-      destination: prev.origin
-    }));
+    setFormData({
+      origin: formData.destination,
+      destination: formData.origin
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -68,7 +58,7 @@ const TripForm = ({ onSubmit }) => {
   };
 
   return (
-    <div className="trip-form-container">
+    <form className="trip-form-container" onSubmit={handleSubmit}>
       <div className="form-group">
         <label><strong>From</strong></label>
         <div className="input-wrapper">
@@ -77,18 +67,13 @@ const TripForm = ({ onSubmit }) => {
           </span>
           <select
             value={formData.origin}
-            onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
+            onChange={(e) => setFormData('origin', e.target.value)}
             disabled={geoLoading}
           >
             <option value="">
               {geoLoading ? 'Finding nearest station...' : 'Select station'}
             </option>
-            {!geoLoading &&
-              Array.from(stations.values()).map((station) => (
-                <option key={station.abbr} value={station.abbr}>
-                  {station.name}
-                </option>
-              ))}
+            {!geoLoading && stationOptions}
           </select>
         </div>
       </div>
@@ -113,18 +98,18 @@ const TripForm = ({ onSubmit }) => {
             onChange={(e) => {
               const newDestination = e.target.value;
               if (isDestinationValid(newDestination)) {
-                setFormData({...formData, destination: newDestination});
+                setFormData('destination', newDestination);
               }
             }}
           >
             <option value="">Destination station</option>
-            {Array.from(stations.values()).map(station => (
+            {stationOptions.map(option => (
               <option 
-                key={station.abbr} 
-                value={station.abbr}
-                disabled={station.abbr === formData.origin}
+                key={option.key} 
+                value={option.props.value}
+                disabled={option.props.value === formData.origin}
               >
-                {station.name}
+                {option.props.children}
               </option>
             ))}
           </select>
@@ -139,7 +124,7 @@ const TripForm = ({ onSubmit }) => {
           </span>
           <select 
             value={formData.time}
-            onChange={(e) => setFormData({...formData, time: e.target.value})}
+            onChange={(e) => setFormData('time', e.target.value)}
           >
             {generateTimeOptions().map((time) => (
               <option key={time} value={time}>
@@ -158,7 +143,7 @@ const TripForm = ({ onSubmit }) => {
           </span>
           <select 
             value={formData.date}
-            onChange={(e) => setFormData({...formData, date: e.target.value})}
+            onChange={(e) => setFormData('date', e.target.value)}
           >
             {generateDateOptions().map((date) => (
               <option key={date.value} value={date.value}>
@@ -172,13 +157,16 @@ const TripForm = ({ onSubmit }) => {
       <button 
         type="submit" 
         className="find-route-btn" 
-        onClick={handleSubmit}
         disabled={!formData.origin || !formData.destination}
       >
         →
       </button>
-    </div>
+    </form>
   );
+};
+
+TripForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired
 };
 
 export default TripForm;

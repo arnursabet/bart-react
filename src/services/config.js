@@ -16,6 +16,5 @@ export const API_CONFIG = {
     stations: '/stn.aspx',
     allroutes: '/route.aspx',
     routes: '/sched.aspx',
-    // schedules: '/sched.aspx'
   }
 }; 

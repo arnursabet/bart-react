@@ -18,6 +18,7 @@
     justify-content: space-between;
   }
 
+  /* Time display styling */
   .time {
     font-size: 30px;
     font-style: normal;
@@ -26,12 +27,14 @@
     color: #000;
   }
   
+  /* Line information container */
   .line-info {
     display: flex;
     align-items: center;
     gap: 8px;
   }
   
+  /* Train line indicator styling */
   .line-indicator {
     width: 33.3%;
     height: auto;
@@ -45,14 +48,16 @@
   }
   
   
+  /* Trip statistics container */
   .trip-stats {
     display: flex;
     gap: 24px;
     color: #666;
     font-size: 14px;
-    white-space: nowrap;
+    white-space: nowrap; /* Prevent wrapping of stat items */
   }
   
+  /* Individual stat item styling */
   .stat {
     width: fit-content;
     display: flex;
@@ -60,16 +65,18 @@
     gap: 4px;
   }
   
+  /* Stat icons */
   .stat img {
     width: 16px;
     height: 16px;
   }
   
+  /* Details expansion button */
   .more-details {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 12px;
+    padding: 12px 24px;
     background: none;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
@@ -79,11 +86,13 @@
     transition: all 0.2s ease-in-out;
   }
 
+  /* Button hover state */
   .more-details:hover {
     background-color: #f5f9ff;
     border-color: #4F8AC9;
   }
 
+  /* Chevron icon animation */
   .chevron {
     display: inline-block;
     transition: transform 0.3s ease;

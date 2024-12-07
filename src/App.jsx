@@ -1,10 +1,10 @@
-import React from 'react';
 import TripPlanner from './components/TripPlanner';
 import './App.css';
 import { StationsProvider } from './context/stationContext';
 import { RoutesProvider } from './context/routesContext';
 import { ClipperModal } from './components/ClipperModal';
-import { UserPreferencesProvider, useUserPreferences } from './context/userPreferencesContext';
+import { UserPreferencesProvider } from './context/userPreferencesContext';
+import { useUserPreferences } from './hooks/useUserPreferences';
 
 const AppContent = () => {
   const { showSetupModal, setShowSetupModal } = useUserPreferences();

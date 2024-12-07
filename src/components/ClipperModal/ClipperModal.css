@@ -1,3 +1,4 @@
+/* Modal overlay with semi-transparent background */
 .clipper-modal-overlay {
     position: fixed;
     top: 0;
@@ -9,25 +10,28 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-  }
-  
-  .clipper-modal {
+}
+
+/* Modal content container */
+.clipper-modal {
     background: white;
     padding: 2rem;
     border-radius: 12px;
     max-width: 500px;
     width: 90%;
     text-align: center;
-  }
-  
-  .clipper-options {
+}
+
+/* Clipper card options grid layout */
+.clipper-options {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     margin-top: 1.5rem;
-  }
-  
-  .clipper-option {
+}
+
+/* Individual clipper option card */
+.clipper-option {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,15 +41,17 @@
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-  }
-  
-  .clipper-option:hover {
+}
+
+/* Hover effect for clipper options */
+.clipper-option:hover {
     border-color: #4F8AC9;
-    transform: translateY(-2px);
-  }
-  
-  .discount {
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Discount text styling */
+.discount {
     font-size: 0.875rem;
-    color: #2e7d32;
+    color: #2e7d32; /* Green color for emphasis */
     font-weight: 500;
-  }
+}

@@ -1,58 +1,36 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, lazy, Suspense } from 'react';
 import TripForm from '../TripForm';
 import RouteResults from '../RouteResults';
 import './TripPlanner.css';
-import { useStations } from '../../context/stationContext';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { CSSTransition } from 'react-transition-group';
 
+/**
+ * Main Trip Planner component that handles the overall trip planning interface.
+ * Manages state transitions between hero view and results view.
+ */
 
-const MapModal = ({ isOpen, onClose }) => {
-  useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    
-    if (isOpen) {
-      document.addEventListener('keydown', handleEsc);
-      document.body.style.overflow = 'hidden';
-    }
-    
-    return () => {
-      document.removeEventListener('keydown', handleEsc);
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen, onClose]);
+// Lazy load MapModal component for better initial load performance
+const MapModal = lazy(() => import('../MapModal'));
 
-  if (!isOpen) return null;
-
-  return (
-    <div className="map-modal-overlay" onClick={onClose}>
-      <div className="map-modal-content" onClick={e => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Close map">×</button>
-        <img
-          src="/bart-map.png"
-          alt="BART System Map"
-          className="modal-map-image"
-        />
-      </div>
-    </div>
-  );
-};
-
+/**
+ * TripPlanner Component
+ * @returns {JSX.Element} The rendered TripPlanner interface
+ */
 const TripPlanner = () => {
+  // State for managing view transitions and route data
   const [showHero, setShowHero] = useState(true);
   const [routeData, setRouteData] = useState(null);
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
-  const {allStations, loading, error} = useStations();
+  // Refs for transition animations
   const heroRef = useRef(null);
-  const formRef = useRef(null);
-  const resultsRef = useRef(null);
 
+  /**
+   * Handles form submission and transitions to results view
+   * @param {Object} data - Route data from API response
+   */
   const handleFormSubmit = async (data = null) => {
     if (!data) return;
-    
-    // Start transition after data is ready
     requestAnimationFrame(() => {
       setRouteData(data);
       setShowHero(false);
@@ -60,8 +38,16 @@ const TripPlanner = () => {
   };
 
   const handleBackClick = () => {
-    setShowHero(true); // Re-expand the hero section
-    setRouteData(null); // Clear route data if needed
+    setShowHero(true);
+    setRouteData(null);
+  };
+
+  const handleMapOpen = () => setIsMapModalOpen(true);
+
+  const handleMapKeyPress = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      setIsMapModalOpen(true);
+    }
   };
 
   return (
@@ -74,11 +60,10 @@ const TripPlanner = () => {
         unmountOnExit
       >
         <div ref={heroRef} className="hero-section">
+          {/* Hero content */}
           <img src="/bart-logo.png" alt="BART Logo" className="bart-logo" />
-          
           <div className="hero-content">
             <h1 className="page-title">Plan Your Trip</h1>
-            
             <div className="service-info">
               <div className="service-hours">
                 <h3>BART Service Hours</h3>
@@ -86,21 +71,15 @@ const TripPlanner = () => {
                 Saturday (6:00 am - Midnight)<br/>
                 Sunday (8:00 am - Midnight)</p>
               </div>
-              
             </div>
           </div>
-
           <div className="map-overlay">
             <div 
               className="map-container"
-              onClick={() => setIsMapModalOpen(true)}
+              onClick={handleMapOpen}
               role="button"
               tabIndex={0}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  setIsMapModalOpen(true);
-                }
-              }}
+              onKeyDown={handleMapKeyPress}
               aria-label="Open BART system map"
             >
               <img
@@ -124,46 +103,31 @@ const TripPlanner = () => {
                 />
               </button>
             </div>
-
-            <MapModal 
-              isOpen={isMapModalOpen} 
-              onClose={() => setIsMapModalOpen(false)} 
-            />
           </div>
         </div>
       </CSSTransition>
 
       <div className="content-section">
-        <TransitionGroup>
-          {showHero ? (
-            <CSSTransition
-              nodeRef={formRef}
-              key="form"
-              timeout={300}
-              classNames="form"
-            >
-              <div ref={formRef}>
-                <TripForm onSubmit={handleFormSubmit} stations={allStations}/>
-              </div>
-            </CSSTransition>
-          ) : (
-            <CSSTransition
-              nodeRef={resultsRef}
-              key="results"
-              timeout={300}
-              classNames="results"
-            >
-              <div ref={resultsRef}>
-                  <button className="back-button" onClick={handleBackClick}>
-                    ← Back to Trip Planner
-                  </button>
-                
-                <RouteResults routeData={routeData} />
-              </div>
-            </CSSTransition>
-          )}
-        </TransitionGroup>
+        {showHero ? (
+          <div>
+            <TripForm onSubmit={handleFormSubmit} />
+          </div>
+        ) : (
+          <div>
+            <button className="back-button" onClick={handleBackClick}>
+              ← Back to Trip Planner
+            </button>
+            <RouteResults routeData={routeData} />
+          </div>
+        )}
       </div>
+
+      <Suspense fallback={<div>Loading...</div>}>
+        <MapModal 
+          isOpen={isMapModalOpen} 
+          onClose={() => setIsMapModalOpen(false)} 
+        />
+      </Suspense>
     </div>
   );
 };

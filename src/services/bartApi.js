@@ -1,8 +1,18 @@
 import { API_CONFIG } from './config';
 
+/**
+ * Configuration for API response caching
+ * @constant {number} CACHE_DURATION - Cache duration in milliseconds (5 minutes)
+ */
 const CACHE_DURATION = 5 * 60 * 1000;
 const cache = new Map();
 
+/**
+ * Wrapper function to handle API response caching
+ * @param {string} key - Cache key
+ * @param {Function} fetchFn - Function to fetch data if cache miss
+ * @returns {Promise<any>} Cached or fresh data
+ */
 const withCache = async (key, fetchFn) => {
   const cached = cache.get(key);
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
@@ -14,8 +24,15 @@ const withCache = async (key, fetchFn) => {
   return data;
 };
 
+/**
+ * BART API service object containing methods for interacting with the BART API
+ */
 export const bartApi = {
-
+  /**
+   * Fetches all BART stations
+   * @returns {Promise<Array>} Array of station objects
+   * @throws {Error} If API request fails
+   */
   getStations: () => withCache('stations', async () => {
     const query = `${API_CONFIG.baseUrl}${API_CONFIG.endpoints.stations}?cmd=stns&key=${API_CONFIG.key}&json=y`;
     
@@ -31,6 +48,15 @@ export const bartApi = {
     }
   }),
 
+  /**
+   * Fetches route information between two stations
+   * @param {string} origin - Origin station abbreviation
+   * @param {string} destination - Destination station abbreviation
+   * @param {string} time - Departure time
+   * @param {string} date - Travel date
+   * @returns {Promise<Array>} Array of route options
+   * @throws {Error} If required parameters are missing or API request fails
+   */
   getRoute: async (origin, destination, time, date) => {
     if (!origin || !destination || !time || !date) {
       throw new Error('Missing required parameters');

@@ -1,26 +1,30 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+/**
+ * Context for managing BART route information
+ * Provides route data and loading states to components
+ */
+import { createContext, useEffect, useState } from 'react';
 import { bartApi } from '../services/bartApi';
 
-const RoutesContext = createContext();
+export const RoutesContext = createContext();
 
-export const useRoutes = () => {
-  const context = useContext(RoutesContext);
-  if (!context) {
-    throw new Error('useRoutes must be used within RoutesProvider');
-  }
-  return context;
-};
-
+/**
+ * Provider component for BART routes data
+ * Fetches and caches route information
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Child components
+ */
 export const RoutesProvider = ({ children }) => {
-  const [routes, setRoutes] = useState(null);
+  // Store routes in a Map for O(1) lookups
+  const [routes, setRoutes] = useState(new Map());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Fetch routes data on mount
   useEffect(() => {
     const fetchRoutes = async () => {
       try {
         const data = await bartApi.getRoutes();
-        // Create a Map for O(1) lookups
+        // Convert array to Map for efficient lookups
         const routesMap = new Map(
           data.map(route => [route.routeID, route])
         );
