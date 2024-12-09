@@ -92,8 +92,8 @@ git push origin main
 
 ## Limitations & Future Development of App
 
-- **BART API Dependency**: The app depends on the BART API to show live data.
-If the case of API downtime or not working, the information in the app might be outdated or delayed.
+- **BART API Dependency**: The app depends primarily on the BART API to show live data.
+In the case of API downtime or not working, the information in the app might be outdated or delayed.
 
 - **Usability & Design Validation**: We did not do testing with real users. 
 This means there could still be problems or painpoints from a user point of view that we may miss.
